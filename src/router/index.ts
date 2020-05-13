@@ -5,12 +5,22 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
   const routes: Array<RouteConfig> = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  }
-]
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('@/views/Login/Login.vue')
+    },
+    {
+      path: '/password',
+      name: 'Password',
+      component: () => import('@/views/Login/Password.vue')
+    },
+  ]
 
 const router = new VueRouter({
   mode: 'history',
