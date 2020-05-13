@@ -1,17 +1,38 @@
 <template>
     <div class="login">
         <LayoutHeader>
-            <el-form slot="container">
+            <el-form :model="ruleForm" label-position="left" label-width="0px" slot="container">
                 <div class="title">
                     <h3>账号密码登录</h3>
                 </div>
+                <!-- username -->
+                <el-form-item>
+                    <el-input type="text" v-model="ruleForm.username" auto-complete="off" placeholder="账号">
+                        <i slot="prefix" class="fa fa-user-o"></i>
+                    </el-input>
+                </el-form-item>
+                <!-- password -->
+                <el-form-item>
+                    <el-input type="text" v-model="ruleForm.pwd" auto-complete="off" placeholder="密码">
+                        <i slot="prefix" class="fa fa-lock"></i>
+                    </el-input>
+                </el-form-item>
+                <!-- 登录button -->
+                <el-form-item>
+                    <el-button type="primary" style="width:100%;">登录</el-button>
+                </el-form-item>
+                <!-- 七天登录和忘记密码 -->
+                <el-form-item>
+                    <el-checkbox v-model="ruleForm.autoLogin" :checked="ruleForm.autoLogin">7天内自动登录</el-checkbox>
+                    <el-button type="text" class="forget">忘记密码？</el-button>
+                </el-form-item>
             </el-form>
         </LayoutHeader>
     </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Provide } from "vue-property-decorator";
 import LayoutHeader from "./LoginHeader.vue";
 
 @Component({
@@ -20,7 +41,17 @@ import LayoutHeader from "./LoginHeader.vue";
     }
 })
 
-export default class Login extends Vue{};
+export default class Login extends Vue{
+    @Provide() ruleForm: {
+        username: String;
+        pwd: String;
+        autoLogin: boolean;
+    } = {
+        username: '',
+        pwd: '',
+        autoLogin: true,
+    }
+};
 
 </script>
 
