@@ -19,7 +19,7 @@
                 </el-form-item>
                 <!-- 登录button -->
                 <el-form-item>
-                    <el-button @click.native.prevent="handleSubmit" type="primary" style="width:100%;">登录</el-button>
+                    <el-button :loading="isLogin" @click.native.prevent="handleSubmit" type="primary" style="width:100%;">登录</el-button>
                 </el-form-item>
                 <!-- 七天登录和忘记密码 -->
                 <el-form-item>
@@ -42,6 +42,7 @@ import LayoutHeader from "./LoginHeader.vue";
 })
 
 export default class Login extends Vue{
+    @Provide() isLogin: boolean = false;
     @Provide() ruleForm: {
         username: String;
         pwd: String;
@@ -64,7 +65,18 @@ export default class Login extends Vue{
     handleSubmit(): void{
         (this.$refs["ruleForm"] as any).validate((valid:boolean) => {
             if (valid) {
-                console.log('校验通过');
+                this.isLogin = true;
+                // console.log('校验通过');
+                // 校验通过，发送ajax请求
+                (this as any).$axios.post('/api/users/login', this.ruleForm)
+                .then((res: any) => {
+                    this.isLogin = false;
+                    // console.log('res.data>>>>>>>>>>>>>>>>>>>>', res.data);
+                    // 将token保存至本地
+                    localStorage.setItem('tsToken', res.data.token);
+                }).catch(() => {
+                    this.isLogin = false;
+                })
             } else {
                 console.log('校验未通过');
             }

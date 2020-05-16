@@ -7,7 +7,12 @@ import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+// 引入封装的 http 请求
+import axios from "./utils/http";
+
 Vue.use(ElementUI);
+Vue.prototype.$axios = axios;
+
 
 
 

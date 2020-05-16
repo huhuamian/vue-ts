@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
   const routes: Array<RouteConfig> = [
     {
@@ -28,4 +28,14 @@ const router = new VueRouter({
   routes
 })
 
-export default router
+// 设置请求拦截
+router.beforeEach((to: any, from: any, next: any) => {
+  const isLogin = localStorage.tsToken ? true : false;
+  if (to.path == '/login' || to.path == '/password') {
+    next();
+  } else {
+    isLogin ? next() : next('/login');
+  }
+})
+
+export default router;
