@@ -46,7 +46,7 @@ export default class Login extends Vue{
     @Provide() ruleForm: {
         username: String;
         pwd: String;
-        autoLogin: boolean;
+        autoLogin: Boolean;
     } = {
         username: '',
         pwd: '',
