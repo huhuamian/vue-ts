@@ -79,6 +79,8 @@ export default class Login extends Vue{
                     localStorage.setItem('tsToken', res.data.token);
                     // 存储到vuex中
                     this.setUser(res.data.token);
+                    // 登陆成功之后跳转到首页
+                    this.$router.push('/');
                 }).catch(() => {
                     this.isLogin = false;
                 })
