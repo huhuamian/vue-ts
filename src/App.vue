@@ -6,12 +6,20 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { State, Mutation, Getter, Action } from "vuex-class";
 
 @Component({
   components: {
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+    // 存储用户信息
+    @Action("setUser") setUser: any;
+    
+    created() {
+        this.setUser(localStorage.tsToken);
+    }
+}
 </script>
 
 <style lang="scss">
