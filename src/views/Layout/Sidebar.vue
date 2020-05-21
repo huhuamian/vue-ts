@@ -1,54 +1,47 @@
 <template>
-    <el-scrollbar class="el-scrollbar">
-        <el-menu class="el-menu-slide" :default-active="$router.currentRouter.path" router>
-            <!-- <el-menu-item index="1">
-                <i class="el-icon-menu"></i>
-                <span slot="title">首页</span>
-            </el-menu-item> -->
-            <template v-for="item in getRouters">
-              <template v-if="item.hidden && item.children && item.children.length > 0">
-                <!-- children 为一个的情况 -->
-                <el-menu-item v-if="item.children.length ==1" :index='item.children[0].path' :key="item.name">
-                    <i v-if="item.children[0].meta.icon" :class="item.children[0].meta.icon"></i>
-                    <span slot="title">{{item.children[0].meta.title}}</span>
-                </el-menu-item>
-
-                <!-- children 有多个的情况  -->
-                <el-submenu v-else :index="item.children[0].path" :key="item.name">
-                  <template slot="title">
-                    <i v-if="item.meta.icon" :class="item.meta.icon"></i>
-                    <span v-if="item.meta && item.meta.title" slot="title">{{item.meta.title}}</span>
-                  </template>
-
-                  <el-menu-item v-for="child in item.children" :index="child.path" :key="child.name">
-                    <i v-if="child.meta.icon" :class="child.meta.icon"></i>
-                    <span v-if="child.meta && child.meta.title" slot="title">{{child.meta.title}}</span>
-                  </el-menu-item>
-                </el-submenu>
-
-              </template>
-            </template>
-        </el-menu>
-    </el-scrollbar>
+  <el-scrollbar class="el-scrollbar">
+    <el-menu class="el-menu-slide" :default-active="$router.currentRoute.path" router>
+      <template
+        v-for="item in getRouters"
+        v-if="item.hidden && item.children && item.children.length>0"
+      >
+        <el-menu-item
+          v-if="item.children.length==1"
+          :index="item.children[0].path"
+          :key="item.name"
+        >
+          <i v-if="item.children[0].meta.icon" :class="item.children[0].meta.icon"></i>
+          <span slot="title">{{item.children[0].meta.title}}</span>
+        </el-menu-item>
+        <!-- 多个子元素 -->
+        <el-submenu v-else :index="item.children[0].path" :key="item.name">
+          <template slot="title">
+            <i v-if="item.meta.icon" :class="item.meta.icon"></i>
+            <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
+          </template>
+          <el-menu-item v-for="child in item.children" :index="child.path" :key="child.name">
+            <i v-if="child.meta.icon" :class="child.meta.icon"></i>
+            <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
+          </el-menu-item>
+        </el-submenu>
+      </template>
+    </el-menu>
+  </el-scrollbar>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { State, Mutation, Getter, Action } from "vuex-class";
-
+import { State, Getter, Mutation, Action } from "vuex-class";
 @Component({
-    components:{}
-
+  components: {}
 })
+export default class Sidebar extends Vue {
+  @Getter("routers") getRouters: any;
 
-export default class Sidebar extends Vue{
-  @Getter('routers') getRouters;
-
-  created(){
-    console.log('GetRouters>>>>>>>>>', this.getRouters);
+  created() {
+    // console.log(this.getRouters);
   }
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -65,4 +58,5 @@ export default class Sidebar extends Vue{
       font-size: 18px;
     }
   }
-}</style>
+}
+</style>

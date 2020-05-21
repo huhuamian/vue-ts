@@ -89,7 +89,7 @@ Vue.use(VueRouter);
       redirect: '/userInfo',
       children: [
         {
-          path: '/useriInfo',
+          path: '/userInfo',
           name: 'userInfo',
           meta: {
             title: '个人中心'

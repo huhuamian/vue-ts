@@ -45,7 +45,9 @@ export default class LayoutHeader extends Vue{
             localStorage.removeItem('tsToken');
             this.$router.push('/login');
         } else if(command === 'userCenter'){
-            console.log('个人中心');
+            // console.log('个人中心');
+            // 跳转个人中心
+            this.$router.push('/user');
         }
 
 
