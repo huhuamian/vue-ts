@@ -35,7 +35,7 @@ export default class LayoutHeader extends Vue{
     @Getter("user") getUser;
 
     created(){
-        console.log('user>>>>>>>>>', this.getUser);
+        // console.log('user>>>>>>>>>', this.getUser);
     }
 
     userCommand(command){
