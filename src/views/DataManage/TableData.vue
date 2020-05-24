@@ -3,7 +3,7 @@
         <!-- 搜索区域 -->
         <div class="search-box">
             <el-input size="small" v-model="searchVal" placeholder="请输入课程名称检索"></el-input>
-            <el-button size="small" type="primary" icon="el-icon-search">搜索</el-button>
+            <el-button @click="handleSearch" size="small" type="primary" icon="el-icon-search">搜索</el-button>
         </div>
 
         <!-- 表格区域 -->
@@ -26,11 +26,14 @@
         <!-- 分页 -->
         <div class="pages" ref="page-box">
             <el-pagination 
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
             :page-sizes="[5, 10, 20]"
             :page-size="size"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total">
             </el-pagination>
+
         </div>
     </div>
 </template>
@@ -45,7 +48,8 @@ import { Component, Vue, Provide } from "vue-property-decorator";
 export default class TableData extends Vue{
     @Provide() searchVal: String = ''; // 搜索框的
 
-    @Provide() tableHeight: Number = document.body.offsetHeight - 207; // 表格高度
+    // @Provide() tableHeight: Number = document.body.offsetHeight - 207; // 表格高度
+    @Provide() tableHeight: Number = document.body.offsetHeight - 320; // 表格高度
 
     @Provide() tableData: any = []; // 表格数据
 
@@ -59,6 +63,7 @@ export default class TableData extends Vue{
         this.loadData();
     }
 
+    // 获取列表数据
     loadData() {
         (this as any).$axios(`/api/profiles/loadMore/${this.page}/${this.size}`)
         .then((res: any) => {
@@ -67,6 +72,41 @@ export default class TableData extends Vue{
             this.total = res.data.data.total;
         })
     }
+
+    // 点击搜索功能
+    handleSearch(): void{
+        // 点击搜索
+        this.page = 1;
+        this.loadSearchData();
+    }
+
+    // 搜索
+    loadSearchData(): void{
+        // 加载搜索数据
+        (this as any).$axios(`/api/profiles/search/${this.searchVal}/${this.page}/${this.size}`)
+        .then((res: any) => {
+            console.log('res>>>>>>>>>>>', res);
+            this.tableData = res.data.datas.list;
+            this.total = res.data.datas.total;
+        })
+    }
+
+
+    // 更改每页条数
+    handleSizeChange(val: Number): void {
+        this.size = val;
+        // console.log('size>>>>>>>>>>>>>>', this.size);
+        this.page = 1;
+        this.searchVal ? this.loadSearchData() : this.loadData();
+    }
+
+    // 页码的变更
+    handleCurrentChange(val: Number): void {
+        this.page = val;
+        // console.log('page>>>>>>>>>>>>>>', this.page);
+        this.searchVal ? this.loadSearchData() : this.loadData();
+    }
+
 }
 </script>
 
