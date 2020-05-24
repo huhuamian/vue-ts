@@ -16,8 +16,8 @@
             <el-table-column label="上线日期" prop="date" width="160"></el-table-column>
 
             <el-table-column label="操作" width="160">
-                <template>
-                    <el-button size="mini">编辑</el-button>
+                <template slot-scope="scope">
+                    <el-button @click="handleEdit(scope.$index, scope.row)" size="mini">编辑</el-button>
                     <el-button size="mini" type="danger">删除</el-button>
                 </template>
             </el-table-column>
@@ -35,14 +35,20 @@
             </el-pagination>
 
         </div>
+
+        <!-- 编辑弹框 -->
+        <EditDialog :dialogVisible="dialogVisible" :formData="formData"></EditDialog>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Provide } from "vue-property-decorator";
+import EditDialog from "./EditDialog.vue";
 
 @Component({
-    components: {}
+    components: {
+        EditDialog,
+    }
 })
 
 export default class TableData extends Vue{
@@ -59,8 +65,26 @@ export default class TableData extends Vue{
 
     @Provide() total: Number = 0; // 数据总数
 
+    @Provide() dialogVisible: Boolean = false; // 是否展示编辑弹框
+
+    @Provide() formData: Object = {
+        titel: '',
+        type: '',
+        level: '',
+        count: '',
+        date: ''
+    }
+
     created() {
         this.loadData();
+    }
+
+    // 编辑操作
+    handleEdit(index: Number, row: Object) {
+        // console.log('index>>>>>>>>>>>>>>>', index);
+        // console.log('row>>>>>>>>>>>>>>>', row);
+        this.formData = row;
+        this.dialogVisible = true;
     }
 
     // 获取列表数据
@@ -90,7 +114,6 @@ export default class TableData extends Vue{
             this.total = res.data.datas.total;
         })
     }
-
 
     // 更改每页条数
     handleSizeChange(val: Number): void {
